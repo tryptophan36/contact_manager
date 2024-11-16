@@ -24,7 +24,7 @@ function App() {
             Contacts Manager
           </Typography>
         </div>
-     <Box sx={{ width: '50%', backgroundColor: 'background.paper',mt:"30px",mx:"auto",p:"10px" }}>
+     <Box sx={{ width: '100%', backgroundColor: 'background.paper',mt:"30px",mx:"auto",p:"10px" }}>
       <Tabs value={value} onChange={handleChange} centered>
         <Tab label="Contact List" />
         <Tab label="Add New Contact" />

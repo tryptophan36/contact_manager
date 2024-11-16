@@ -1,7 +1,6 @@
 const { db } = require("../connect");
 
 const getContacts = async (req, res) => {
-
   try {
     const filter =req.query.filter||"name"
     const search = req.query.search||"";
@@ -67,7 +66,48 @@ const postContact = async (req, res) => {
 
 const updateContact = async (req, res) => {
   try {
-  } catch (error) {}
+    const { id, name, email, phone, company, job_title } = req.body;
+  
+    if (!id || !name || !phone) {
+      return res
+        .status(400)
+        .json({ message: "ID, name, and phone number are required" });
+    }
+  
+    db.getConnection((err, conn) => {
+      if (err) {
+        return res.status(500).send(err);
+      } else {
+        const sql = `
+          UPDATE contacts 
+          SET name = ?, email = ?, phone = ?, company = ?, job_title = ?
+          WHERE id = ?
+        `;
+  
+        conn.query(sql, [name, email, phone, company, job_title, id], (err, result) => {
+          if (err) return res.status(500).send(err);
+          
+          if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Contact not found" });
+          }
+  
+          res.status(200).json({
+            id,
+            name,
+            email,
+            phone,
+            company,
+            job_title,
+            message: "Contact updated successfully"
+          });
+        });
+  
+        conn.release();
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 const deleteContact = async (req, res) => {

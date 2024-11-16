@@ -12,7 +12,8 @@ import {
   TextField,
   Box,
   Select,
-  InputLabel
+  InputLabel,
+  useMediaQuery
 } from '@mui/material';
 import EditContactModal from '../components/EditContactModal';
 import IconButton from '@mui/material/IconButton';
@@ -20,6 +21,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const ContactView = () => {
+  const isNonMobileScreen = useMediaQuery("(min-width:1000px)")
   const [contacts, setContacts] = useState([]);
   const [page, setPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
@@ -45,7 +47,7 @@ const ContactView = () => {
        cancelToken: request.token
       });
       console.log(response);
-      setContacts(response?.data.slice(0,rowsPerPage));
+      setContacts(response?.data);
       setTotalCount(response?.data.length);
     } catch (error) {
       console.error('Error fetching contacts:', error);
@@ -86,7 +88,7 @@ const ContactView = () => {
 
   return (
     <>
-      <Paper sx={{ width: '80%', overflow: 'hidden',mx:"auto" }}>
+      <Paper sx={{width: `${isNonMobileScreen?'80%':'100%'}`, overflow: 'hidden',mx:"auto",height:"80vh",overflowY:"auto" }}>
         <Box sx={{ p: 2, display: 'flex', gap: 2 }}>
           <Select
             label="Group By"

@@ -24,17 +24,20 @@ const EditContactModal = ({ open, handleClose, contact, onUpdateSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData)
     setLoading(true);
     setError(null);
 
     try {
       await axios.put(
         `http://localhost:5000/api/contacts/${contact.id}`,
-        {data:formData}
+        formData
       );
+      alert("contact updated successfully")
       onUpdateSuccess(); // Callback to refresh the parent component
       handleClose();
     } catch (err) {
+      alert("error updating contact")
       setError(
         err.response?.data?.message ||
           "An error occurred while updating the contact"
