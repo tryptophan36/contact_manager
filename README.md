@@ -1,70 +1,96 @@
-# Getting Started with Create React App
+# Contact Management Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Features
 
-## Available Scripts
+### 1. Contact List
 
-In the project directory, you can run:
+The **Contact List** tab provides a table view of all contacts in the database, with features to enhance usability:
 
-### `npm start`
+- **Dynamic Sorting**: Users can sort contacts by fields:
+  - Name
+  - Phone
+  - Email
+  - Company
+  - Job Title
+- **Search Functionality**: A search box allows users to find specific contacts by typing in relevant keywords.
+- **Action Buttons**: Each contact entry has:
+  - **Edit**: Opens a form to update the contact's details.
+  - **Delete**: Removes the contact from the list.
+  
+Data is fetched from the backend using Axios, with sorting and search implemented dynamically by passing query parameters and adjusting SQL queries accordingly.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 2. Add New Contact
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The **Add New Contact** tab includes a form with validations for adding new contacts:
 
-### `npm test`
+- **Form with MUI**: A clean and responsive form built using Material-UI components.
+- **Validations**: Ensures fields have valid inputs, including:
+  - Required fields (e.g., Name, Phone)
+  - Format validation (e.g., email format)
+  - Length checks for certain fields
+- **Form Submission**: On submission, the form data is sent to the backend using a POST request, where a new contact is added to the MySQL database.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Database Setup
 
-### `npm run build`
+**Why MySQL?**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+MySQL was selected over NoSQL databases like MongoDB because:
+ - **Structured Data**: Contacts have a consistent structure and fixed number of columns with known values, making a relational database suitable.
+ - **Efficiency**: Relational databases perform well with structured data, whereas NoSQL excels with unstructured or dynamic data.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Creating a MySQL Database and Table
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+To set up the database locally, follow these steps:
 
-### `npm run eject`
+1. **Start MySQL** and create a new database:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   ```sql
+   CREATE DATABASE contact_management;
+2. Create the contacts Table:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```sql
+USE contact_management;
+CREATE TABLE contacts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  phone VARCHAR(15) NOT NULL UNIQUE,
+  company VARCHAR(100),
+  job_title VARCHAR(100)
+);
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Running the Backend
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+To set up and run the backend server, follow these steps:
 
-## Learn More
+### Navigate to the Backend Directory
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+cd backend
+```
+### Set Up Environment Variables
+Create a .env file in the backend directory and add the following fields, replacing placeholders with your MySQL credentials:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```env
+DB_HOST=localhost
+DB_USER=<your username>
+DB_PASSWORD=<your password>
+DB_NAME=contact_management
+```
+### Install Dependencies and start the server
+```bash
+npm install
+npm start
+```
+## Technical Decisions
 
-### Code Splitting
+ ### Dynamic Sorting and Searching
+ Sorting and Searching of contacts based on feilds(name,phone,email...) dynamically is done through passing the filters through query params and altering the sql query
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+  ### Robust Form validation
+ Form validations are done both on frontend and backend levels :
+  - On Client side it is done through matching regex expressions.
+  - On server side it is done through proper value checks and error handling.
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
