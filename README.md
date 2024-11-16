@@ -92,5 +92,8 @@ npm start
  Form validations are done both on frontend and backend levels :
   - On Client side it is done through matching regex expressions.
   - On server side it is done through proper value checks and error handling.
+  - 
+ ### Mysql2 connection Pooling
+ A connection pool of mysql2 was used for database calls in the api which has several advantages like **Reduced connection creation time**, **Improved response time**
 
 
